@@ -4,6 +4,7 @@ from matplotlib import style
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import IsolationForest
 
 p = pd.read_csv('C:\\users\\thecasual\\Documents\\Github\\projects\\web.csv')
 p = p.drop(columns='timestamp')
@@ -18,11 +19,12 @@ p = p[['url', 'hour_of_day']]
 #j.to_csv('C:\\users\\thecasual\\Documents\\Github\\projects\\test.csv')
 
 # define % of anomalies
-
+rng = np.random.RandomState(42)
 
 X = pd.get_dummies(p, columns=p.columns, drop_first=True).to_numpy()
-X_train, X_test = train_test_split(df, test_size=0.2)
-clf = IsolationForest(behaviour='new', max_samples=100,
-                      random_state=rng, contamination='auto')
+X_train, X_test = train_test_split(X, test_size=0.2)
+clf = IsolationForest(behaviour='new', random_state=rng, contamination='auto')
 
 clf.fit(X_train)
+
+print("test")
